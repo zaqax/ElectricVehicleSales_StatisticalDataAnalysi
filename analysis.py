@@ -29,7 +29,7 @@ if not os.path.isdir("output"):
     os.makedirs("output")
 
 df_global.to_csv("output/global_ev_sales.csv", index=False)
-print("✅ global_ev_sales.csv başarıyla oluşturuldu.\n")
+print("global_ev_sales.csv başarıyla oluşturuldu.\n")
 
 # ----------------------------------------
 # 2. Tanımlayıcı İstatistikler
@@ -43,7 +43,7 @@ var = np.var(x, ddof=1)
 std = np.std(x, ddof=1)
 stderr = std / np.sqrt(n)
 
-print("📊 Tanımlayıcı İstatistikler:")
+print("Tanımlayıcı İstatistikler:")
 print(f"n (gözlem sayısı): {n}")
 print(f"Ortalama: {mean:,.2f}")
 print(f"Medyan: {median:,.2f}")
@@ -62,7 +62,7 @@ lower_bound = Q1 - 1.5 * IQR
 upper_bound = Q3 + 1.5 * IQR
 outliers = x[(x < lower_bound) | (x > upper_bound)]
 
-print("📌 Aykırı Değer Analizi (IQR yöntemi):")
+print("Aykırı Değer Analizi (IQR yöntemi):")
 print(f"Q1 (1. Çeyreklik): {Q1:,.0f}")
 print(f"Q3 (3. Çeyreklik): {Q3:,.0f}")
 print(f"IQR (Q3 - Q1): {IQR:,.0f}")
@@ -70,9 +70,9 @@ print(f"Aykırı Alt Sınır: {lower_bound:,.0f}")
 print(f"Aykırı Üst Sınır: {upper_bound:,.0f}\n")
 
 if outliers.empty:
-    print("🔹 Aykırı değer bulunmadı.\n")
+    print("Aykırı değer bulunmadı.\n")
 else:
-    print("🔺 Aykırı Değerler:")
+    print("Aykırı Değerler:")
     outlier_rows = df_global[df_global["Annual_Sales"].isin(outliers)].loc[:, ["year", "Annual_Sales"]]
     for year, value in outlier_rows.values:
         print(f"  - Yıl: {year}, Satış: {value:,.0f}")
@@ -86,7 +86,7 @@ z = 1.96  # 95% güven düzeyi için Z değeri
 ci_lower = mean - z * stderr
 ci_upper = mean + z * stderr
 
-print("📏 %95 Güven Aralığı Hesabı:")
+print("%95 Güven Aralığı Hesabı:")
 print(f"Ortalama Yıllık Satış: {mean:,.0f}")
 print(f"Standart Sapma: {std:,.0f}")
 print(f"Örneklem Sayısı: {n}")
@@ -104,7 +104,7 @@ std_millions = std / 1e6  # milyon cinsinden standart sapma
 n_required = (z_90 * std_millions / E) ** 2
 n_required = int(np.ceil(n_required))
 
-print("🧮 Örneklem Büyüklüğü Hesabı (90% güven, ±0.1 hata):")
+print("Örneklem Büyüklüğü Hesabı (90% güven, ±0.1 hata):")
 print(f"Gerekli minimum örneklem sayısı: {n_required} yıl\n")
 
 # ----------------------------------------
@@ -117,13 +117,13 @@ df = n - 1
 from scipy.stats import t as t_dist
 p_value = 2 * (1 - t_dist.cdf(abs(t_stat), df=df))
 
-print("🧪 Hipotez Testi (Ortalama 6 milyon mu?):")
+print("Hipotez Testi (Ortalama 6 milyon mu?):")
 print("H0: Ortalama = 6 milyon")
 print("H1: Ortalama ≠ 6 milyon")
 print(f"t-istatistiği: {t_stat:.2f}")
 print(f"p-değeri: {p_value:.5f}")
 
 if p_value < 0.05:
-    print("❌ H0 reddedildi: Ortalama satış 6 milyondan farklıdır.\n")
+    print("H0 reddedildi: Ortalama satış 6 milyondan farklıdır.\n")
 else:
-    print("✔ H0 kabul edildi: Ortalama satış 6 milyona eşittir.\n")
+    print("H0 kabul edildi: Ortalama satış 6 milyona eşittir.\n")
